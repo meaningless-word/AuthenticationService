@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -62,7 +63,7 @@ namespace AuthenticationService.Controllers
 			return userViewModel;
 		}
 
-		[HttpPost]
+		[HttpGet]
 		[Route("authenticate")]
 		public async Task<UserViewModel> Authenticate(string login, string password)
 		{
@@ -77,9 +78,10 @@ namespace AuthenticationService.Controllers
 			if (user.Password != password)
 				throw new AuthenticationException("Введенный пароль не корректен");
 
-			var claims = new List<Claim> {
-			  new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-			  new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
+			var claims = new List<Claim>
+			{
+				new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+				new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
 			};
 
 			ClaimsIdentity claimsIdentity = new ClaimsIdentity(

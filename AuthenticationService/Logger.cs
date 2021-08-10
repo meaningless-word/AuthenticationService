@@ -11,7 +11,6 @@ namespace AuthenticationService
 	{
         private ReaderWriterLockSlim lock_ = new ReaderWriterLockSlim();
         private string logDirectory { get; set; }
-        private string errDirectory { get; set; }
 
         public Logger()
         {
@@ -19,10 +18,6 @@ namespace AuthenticationService
 
             if (!Directory.Exists(logDirectory))
                 Directory.CreateDirectory(logDirectory);
-
-            errDirectory = AppDomain.CurrentDomain.BaseDirectory + @"/_errs/";
-            if (!Directory.Exists(errDirectory))
-                Directory.CreateDirectory(errDirectory);
         }
 
         public void WriteEvent(string eventMessage)
@@ -46,7 +41,7 @@ namespace AuthenticationService
             lock_.EnterWriteLock();
             try
             {
-                using (StreamWriter writer = new StreamWriter(errDirectory + "errors.txt", append: true))
+                using (StreamWriter writer = new StreamWriter(logDirectory + "errors.txt", append: true))
                 {
                     writer.WriteLine(errorMessage);
                 }

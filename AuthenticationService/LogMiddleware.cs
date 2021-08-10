@@ -5,8 +5,8 @@ namespace AuthenticationService
 {
 	public class LogMiddleware
 	{
-		private readonly RequestDelegate _next;
 		private readonly ILogger _logger;
+		private readonly RequestDelegate _next;
 
 		public LogMiddleware(RequestDelegate next, ILogger logger)
 		{
@@ -16,10 +16,7 @@ namespace AuthenticationService
 
 		public async Task Invoke(HttpContext httpContext)
 		{
-			//тут будет логика нашего Middleware
-			_logger.WriteEvent("Я твой Middleware");
-			_logger.WriteEvent(httpContext.Connection.RemoteIpAddress.ToString());
-
+			_logger.WriteEvent("IP-адрес клиента: " + httpContext.Connection.RemoteIpAddress.ToString());
 			await _next(httpContext);
 		}
 	}

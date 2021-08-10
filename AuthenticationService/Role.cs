@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AuthenticationService
+﻿namespace AuthenticationService
 {
 	public class Role
 	{
